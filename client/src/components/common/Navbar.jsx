@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Menu, LogOut, User } from 'lucide-react';
+import { Menu, LogOut, User, ImageIcon } from 'lucide-react';
 
 function Navbar() {
   const { user, logout } = useContext(AuthContext);
@@ -31,14 +31,13 @@ function Navbar() {
     <nav className="border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo/Brand */}
           <div className="flex-shrink-0">
-            <a
-              href="/"
-              className="text-2xl font-extrabold tracking-tight hover:text-blue-400 transition-colors duration-200"
-            >
-              Image Manager
-            </a>
+            <div className="flex items-center space-x-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+                <ImageIcon className="h-4 w-4 text-primary-foreground" />
+              </div>
+              <span className="text-xl font-bold">ImageVault</span>
+            </div>
           </div>
 
           {/* Desktop Menu */}

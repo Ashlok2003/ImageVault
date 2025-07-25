@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthContext from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -90,9 +90,9 @@ export default function Signup() {
               </form>
               <p className="mt-6 text-center text-sm text-gray-600">
                 Already have an account?{' '}
-                <a href="/login" className="text-purple-600 hover:underline">
+                <Link to="/login" className="text-purple-600 hover:underline">
                   Log in
-                </a>
+                </Link>
               </p>
             </CardContent>
           </Card>
