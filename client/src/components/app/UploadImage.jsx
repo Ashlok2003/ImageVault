@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useRef, useEffect } from "react";
 import { useFileExplorer } from "@/contexts/FileExplorerContext";
 import {
@@ -65,7 +67,7 @@ export default function UploadImage({ onImageUploaded }) {
       formData.append("image", file);
       formData.append("name", name.trim());
       if (parentFolder !== "root") {
-        formData.append("parentFolder", parentFolder);
+        formData.append("folder", parentFolder);
       }
 
       const response = await axios.post(
@@ -196,7 +198,6 @@ export default function UploadImage({ onImageUploaded }) {
             >
               Cancel
             </Button>
-            hogehoge
             <Button
               type="submit"
               disabled={submitting || !file || !name.trim()}

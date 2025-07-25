@@ -1,31 +1,18 @@
+
+"use client";
+
 import { useState, useEffect, useCallback } from "react";
 import { useFileExplorer } from "@/contexts/FileExplorerContext";
-import { FolderIcon, FolderOpenIcon, ImageIcon, EditIcon, CheckIcon, XIcon } from "lucide-react";
+import { FolderIcon, FolderOpenIcon, ImageIcon } from "lucide-react";
 import { HashLoader } from "react-spinners";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import axios from "axios";
 
 const FolderItem = ({
   folder,
   level = 0,
-  onRename,
   onSelect,
   selectedId
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isRenaming, setIsRenaming] = useState(false);
-  const [newName, setNewName] = useState(folder.name);
-
-  const handleRename = () => {
-    onRename(folder._id, newName);
-    setIsRenaming(false);
-  };
-
-  const handleCancel = () => {
-    setNewName(folder.name);
-    setIsRenaming(false);
-  };
 
   return (
     <div className="ml-2">
@@ -46,62 +33,33 @@ const FolderItem = ({
             <FolderIcon className="text-amber-500 size-5" />
           )}
         </button>
-
-        {isRenaming ? (
-          <div className="flex items-center flex-1 gap-2">
-            <Input
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              className="h-8 text-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-              autoFocus
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-7 hover:bg-blue-100"
-              onClick={handleRename}
-            >
-              <CheckIcon className="size-4 text-green-600" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-7 hover:bg-red-100"
-              onClick={handleCancel}
-            >
-              <XIcon className="size-4 text-red-600" />
-            </Button>
-          </div>
-        ) : (
-          <div className="flex items-center flex-1">
-            <span
-              className="flex-1 cursor-pointer truncate text-sm font-medium"
-              onClick={() => {
-                onSelect(folder._id);
-                setIsExpanded(true);
-              }}
-            >
-              {folder.name}
-            </span>
-            <button
-              className="ml-2 p-1 rounded-full hover:bg-gray-200 transition-colors duration-150"
-              onClick={() => setIsRenaming(true)}
-            >
-              <EditIcon className="size-4 text-gray-500" />
-            </button>
-          </div>
-        )}
+        <span
+          className="flex-1 cursor-pointer truncate text-sm font-medium"
+          onClick={() => {
+            onSelect(folder._id);
+            setIsExpanded(true);
+          }}
+        >
+          {folder.name}
+        </span>
       </div>
 
       {isExpanded && folder.children && folder.children.map(child => (
-        <FolderItem
-          key={child._id}
-          folder={child}
-          level={level + 1}
-          onRename={onRename}
-          onSelect={onSelect}
-          selectedId={selectedId}
-        />
+        child.isImage ? (
+          <ImageItem
+            key={`img-${child._id}`}
+            image={child}
+            level={level + 1}
+          />
+        ) : (
+          <FolderItem
+            key={child._id}
+            folder={child}
+            level={level + 1}
+            onSelect={onSelect}
+            selectedId={selectedId}
+          />
+        )
       ))}
     </div>
   );
@@ -175,19 +133,6 @@ export default function FolderTree() {
     }
   }, [folders, images, loading, buildTree]);
 
-  const handleRename = async (folderId, newName) => {
-    try {
-      const token = localStorage.getItem("token");
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/folders/${folderId}`,
-        { name: newName },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-    } catch (err) {
-      console.error("Rename error:", err);
-    }
-  };
-
   const handleSelectFolder = (folderId) => {
     setSelectedFolder(folderId);
   };
@@ -240,7 +185,6 @@ export default function FolderTree() {
               <FolderItem
                 key={item._id}
                 folder={item}
-                onRename={handleRename}
                 onSelect={handleSelectFolder}
                 selectedId={selectedFolder}
               />
