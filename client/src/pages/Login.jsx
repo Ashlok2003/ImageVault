@@ -38,7 +38,7 @@ export default function Login() {
             We're excited to have you back. Login to manage your folders and files effortlessly.
           </p>
           <img
-            src="/logo.jpg"
+            src="/logo.png"
             alt="Login Illustration"
             className="mt-8 w-full max-w-sm mx-auto"
           />

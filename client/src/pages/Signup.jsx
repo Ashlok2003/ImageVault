@@ -38,7 +38,7 @@ export default function Signup() {
             Sign up and start organizing your folders, sharing files, and collaborating with ease.
           </p>
           <img
-            src="/logo.jpg"
+            src="/logo.png"
             alt="Signup Illustration"
             className="mt-8 w-full max-w-sm mx-auto"
           />
